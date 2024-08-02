@@ -17,32 +17,21 @@ export const StyledStage = styled.div`
     overflow: hidden;
 
     @media (max-width: 1200px) {
-        grid-template-rows: repeat(
-            ${props => props.height},
-            calc(35vw / ${props => props.width})
-        );
         max-width: 35vw;
         border: 1.5px solid #333;
         border-radius: 8px;
     }
 
     @media (max-width: 768px) {
-        grid-template-rows: repeat(
-            ${props => props.height},
-            calc(50vw / ${props => props.width})
-        );
         max-width: 50vw;
         border: 1px solid #333;
         border-radius: 6px;
     }
 
     @media (max-width: 480px) {
-        grid-template-rows: repeat(
-            ${props => props.height},
-            calc(75vw / ${props => props.width})
-        );
         max-width: 75vw;
         border: 0.5px solid #333;
         border-radius: 4px;
     }
 `;
+

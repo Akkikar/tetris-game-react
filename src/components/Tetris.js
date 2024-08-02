@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState } from 'react';
 import { createStage, didCollide } from '../gameHelpers';
 
 // Custom Hooks
@@ -14,7 +13,7 @@ import Display from './Display';
 import StartButton from './StartButton';
 
 // Styled Components
-import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
+import { StyledTetrisWrapper, StyledTetris, StyledControls, ControlButton } from './styles/StyledTetris';
 
 const Tetris = () => {
     const [dropTime, setDropTime] = useState(null);
@@ -79,6 +78,7 @@ const Tetris = () => {
     const dropPlayer = () => {
         setDropTime(null);
         drop();
+        setDropTime(1000 / (level + 1) + 100);
     };
 
     // Move function based on keyCode
@@ -100,60 +100,10 @@ const Tetris = () => {
         }
     };
 
-    // Touch start event handler
-    const handleTouchStart = (e) => {
-        e.preventDefault(); // Prevent default behavior like scrolling
-
-        const touchStartX = e.touches[0].clientX;
-        const touchStartY = e.touches[0].clientY;
-
-        const handleTouchMove = (e) => {
-            e.preventDefault(); // Prevent default behavior like scrolling
-
-            const touchEndX = e.changedTouches[0].clientX;
-            const touchEndY = e.changedTouches[0].clientY;
-
-            const deltaX = touchEndX - touchStartX;
-            const deltaY = touchEndY - touchStartY;
-
-            if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                if (deltaX > 0) {
-                    movePlayer(1); // Move right
-                } else {
-                    movePlayer(-1); // Move left
-                }
-            } else {
-                if (deltaY > 0) {
-                    dropPlayer(); // Drop down
-                } else {
-                    playerRotate(stage, 1); // Rotate
-                }
-            }
-        };
-
-        document.addEventListener('touchmove', handleTouchMove, { passive: false });
-
-        const handleTouchEnd = () => {
-            document.removeEventListener('touchmove', handleTouchMove);
-            document.removeEventListener('touchend', handleTouchEnd);
-        };
-
-        document.addEventListener('touchend', handleTouchEnd);
-    };
-
     // Interval hook for dropping pieces
     useInterval(() => {
         drop();
     }, dropTime);
-
-    // Effect hook for touch start event
-    useEffect(() => {
-        document.addEventListener('touchstart', handleTouchStart, { passive: false });
-
-        return () => {
-            document.removeEventListener('touchstart', handleTouchStart);
-        };
-    }, []);
 
     // Render the Tetris game interface
     return (
@@ -162,7 +112,6 @@ const Tetris = () => {
             tabIndex="0"
             onKeyDown={move}
             onKeyUp={keyUp}
-            onTouchStart={handleTouchStart} // Add onTouchStart for direct touch interaction
         >
             <StyledTetris>
                 <Stage stage={stage} />
@@ -178,6 +127,12 @@ const Tetris = () => {
                     )}
                     <StartButton callback={startGame} />
                 </aside>
+                <StyledControls>
+                    <ControlButton className="up" onClick={() => playerRotate(stage, 1)}>↻</ControlButton>
+                    <ControlButton className="left" onClick={() => movePlayer(-1)}>←</ControlButton>
+                    <ControlButton className="down" onClick={dropPlayer}>↓</ControlButton>
+                    <ControlButton className="right" onClick={() => movePlayer(1)}>→</ControlButton>
+                </StyledControls>
             </StyledTetris>
         </StyledTetrisWrapper>
     );

@@ -4,53 +4,83 @@ import bgImage from "../../img/bg.png";
 export const StyledTetrisWrapper = styled.div`
     width: 100vw;
     height: 100vh;
-    background: url(${bgImage}) no-repeat center center fixed;
+    background: url(${bgImage}) #000;
     background-size: cover;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 `;
 
 export const StyledTetris = styled.div`
     display: flex;
-    justify-content: space-around; /* Adjusts spacing between game area and side content */
     align-items: flex-start;
-    padding: 20px;
+    padding: 40px;
     margin: 0 auto;
-    max-width: 1200px; /* Limit maximum width of the Tetris container */
-    width: 100%;
-    background: rgba(0, 0, 0, 0.75);
-    border-radius: 10px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
+    max-width: 900px;
 
     aside {
-        flex: 0 0 auto; /* Prevents aside from growing */
-        width: 200px; /* Fixed width for aside content */
-        padding: 10px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 5px;
-        box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 200px;
+        display: block;
+        padding: 0 20px;
+    }
+`;
+
+export const StyledControls = styled.div`
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas:
+        ". up ."
+        "left . right"
+        ". down .";
+    grid-gap: 5px;  /* Reduced space */
+
+    @media (min-width: 768px) {
+        grid-gap: 10px;  /* Slightly larger gap for larger screens */
+    }
+`;
+
+export const ControlButton = styled.button`
+    width: 40px;  /* Reduced size */
+    height: 40px;  /* Reduced size */
+    background: #333;
+    color: white;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s, transform 0.2s;
+
+    &:hover {
+        background: #555;
     }
 
-    @media (max-width: 1200px) {
-        flex-direction: column; /* Stack content vertically on smaller screens */
-        align-items: center; /* Center items horizontally */
+    &:active {
+        transform: scale(0.9);
+        background: #777;
     }
 
-    @media (max-width: 768px) {
-        padding: 15px;
-        aside {
-            width: 100%; /* Full width for aside on smaller screens */
-            margin-top: 20px; /* Add margin top for spacing */
-        }
+    @media (min-width: 768px) {
+        width: 50px;  /* Slightly larger size for larger screens */
+        height: 50px;  /* Slightly larger size for larger screens */
+        font-size: 1.5rem;
     }
 
-    @media (max-width: 480px) {
-        padding: 10px;
-        aside {
-            padding: 10px;
-        }
+    &.up {
+        grid-area: up;
+    }
+    &.left {
+        grid-area: left;
+    }
+    &.down {
+        grid-area: down;
+    }
+    &.right {
+        grid-area: right;
     }
 `;
